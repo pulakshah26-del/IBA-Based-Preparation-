@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GRE Verbal Vocabulary Practice</title>
+<style>
+  :root {
+    --bg: #f3f5f8;
+    --panel: #ffffff;
+    --ink: #17202e;
+    --muted: #5b6678;
+    --line: #d5dbe5;
+    --accent: #1f4e8c;
+    --accent-ink: #ffffff;
+    --good: #1b7a46;
+    --good-bg: #e3f4ea;
+    --bad: #b3261e;
+    --bad-bg: #fbe7e5;
+    --pick: #e6eefa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10151d;
+      --panel: #181f2a;
+      --ink: #e6ebf3;
+      --muted: #9aa6b8;
+      --line: #2d3748;
+      --accent: #7fb0ee;
+      --accent-ink: #0b1220;
+      --good: #6fd09a;
+      --good-bg: #16301f;
+      --bad: #ff8f87;
+      --bad-bg: #3a1a18;
+      --pick: #1f2d44;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: 5rem; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 17px/1.55 Georgia, "Times New Roman", serif;
+  }
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 0 1rem 4rem; }
+
+  header.top {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+  }
+  .top-inner {
+    max-width: 46rem; margin: 0 auto; padding: .6rem 1rem;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: .9rem;
+  }
+  .top-inner strong { font-size: 1rem; }
+  .spacer { flex: 1; }
+  .bar { width: 100%; height: 4px; background: var(--line); }
+  .bar > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 2rem 0 .4rem; }
+  .lede { color: var(--muted); margin: 0 0 1.2rem; }
+
+  .modes {
+    display: flex; gap: .5rem; flex-wrap: wrap; align-items: center;
+    font-family: system-ui, sans-serif; font-size: .92rem; margin-bottom: 1rem;
+  }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .seg button {
+    font: inherit; padding: .4rem .8rem; border: 0; background: var(--panel); color: var(--ink); cursor: pointer;
+  }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+  button.act {
+    font: 600 .95rem system-ui, sans-serif; padding: .55rem 1rem; border-radius: 6px;
+    border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); cursor: pointer;
+  }
+  button.act.ghost { background: transparent; color: var(--accent); }
+  button:focus-visible, input:focus-visible + .opt-body { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  section.part { margin-top: 2.2rem; }
+  section.part h2 { font-size: 1.25rem; margin: 0 0 .3rem; }
+  .directions {
+    color: var(--muted); font-size: .95rem; margin: 0 0 1rem;
+    padding-left: .8rem; border-left: 3px solid var(--line);
+  }
+
+  .q {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 1rem 1.1rem; margin-bottom: .9rem;
+  }
+  .q.right { border-color: var(--good); }
+  .q.wrong { border-color: var(--bad); }
+  .q-head { display: flex; gap: .7rem; }
+  .q-num { font: 600 .9rem system-ui, sans-serif; color: var(--muted); min-width: 1.8rem; padding-top: .2rem; }
+  .q-text { margin: 0; }
+  .q-text.stem { font-size: 1.12rem; letter-spacing: .02em; }
+  fieldset { border: 0; padding: 0; margin: .7rem 0 0 2.5rem; }
+  legend { position: absolute; left: -9999px; }
+  .opt { display: block; margin: .25rem 0; cursor: pointer; }
+  .opt input { position: absolute; opacity: 0; }
+  .opt-body {
+    display: flex; gap: .6rem; padding: .35rem .6rem; border-radius: 6px; border: 1px solid transparent;
+  }
+  .opt:hover .opt-body { background: var(--pick); }
+  .opt input:checked + .opt-body { background: var(--pick); border-color: var(--accent); }
+  .opt .L { font: 600 .9rem system-ui, sans-serif; color: var(--muted); min-width: 1.3rem; padding-top: .1rem; }
+  .opt.is-correct .opt-body { background: var(--good-bg); border-color: var(--good); }
+  .opt.is-wrong .opt-body { background: var(--bad-bg); border-color: var(--bad); }
+  .opt.locked { cursor: default; }
+  .opt.locked:hover .opt-body { background: transparent; }
+  .opt.locked.is-correct:hover .opt-body { background: var(--good-bg); }
+  .opt.locked.is-wrong:hover .opt-body { background: var(--bad-bg); }
+
+  .why {
+    margin: .7rem 0 0 2.5rem; padding: .6rem .8rem; border-radius: 6px;
+    background: var(--pick); font: .95rem/1.6 system-ui, "Nirmala UI", "Noto Sans Bengali", "Kalpurush", sans-serif;
+  }
+  .why[hidden] { display: none; }
+  .verdict { font-weight: 700; }
+  .verdict.ok { color: var(--good); }
+  .verdict.no { color: var(--bad); }
+
+  .results {
+    margin-top: 2rem; padding: 1.2rem 1.3rem; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--panel); font-family: system-ui, sans-serif;
+  }
+  .results[hidden] { display: none; }
+  .results h2 { margin: 0 0 .5rem; font-size: 1.3rem; font-family: Georgia, serif; }
+  .results table { border-collapse: collapse; margin: .6rem 0 1rem; width: 100%; max-width: 26rem; }
+  .results td, .results th { text-align: left; padding: .3rem .5rem; border-bottom: 1px solid var(--line); }
+  .actions { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1.5rem; font-family: system-ui, sans-serif; }
+
+  footer { margin-top: 3rem; color: var(--muted); font: .85rem/1.5 system-ui, sans-serif; }
+
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    fieldset, .why { margin-left: 0; }
+    h1 { font-size: 1.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <strong>GRE Verbal Vocabulary</strong>
+    <span id="progressText">0 of 0 answered</span>
+    <span class="spacer"></span>
+    <button class="act ghost" id="jumpSubmit" type="button">Check answers</button>
+  </div>
+  <div class="bar"><i id="progressBar"></i></div>
+</header>
+
+<main class="wrap">
+  <h1>GRE Verbal Vocabulary Practice</h1>
+  <p class="lede">Sentence completion, analogies, and antonyms. No reading comprehension.</p>
+
+  <div class="modes">
+    <span>Mode:</span>
+    <div class="seg" role="group" aria-label="Feedback mode">
+      <button type="button" id="modePractice" aria-pressed="true">Practice (instant feedback)</button>
+      <button type="button" id="modeTest" aria-pressed="false">Test (feedback at the end)</button>
+    </div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button class="act" id="submit" type="button">Check answers</button>
+    <button class="act ghost" id="reset" type="button">Start over</button>
+  </div>
+
+  <div class="results" id="results" hidden aria-live="polite"></div>
+
+  <footer>
+    All questions on this page are original practice items, written in the style of the GRE verbal section.
+    Progress is saved in your browser only.
+  </footer>
+</main>
+
+<script>
+/* ------------------------------------------------------------------
+   QUESTION DATA
+   To use your own questions, edit the arrays below.
+   Each question: { q: "text", o: ["option A", ... "option E"], a: index of correct option (0-4), why: "short explanation" }
+   For analogies, "q" is the capitalized pair, e.g. "ARCHITECT : BLUEPRINT".
+   ------------------------------------------------------------------ */
+const PARTS = [
+  {
+    id: "sc",
+    title: "Part 1: Sentence completion",
+    directions: "Each sentence has one or two blanks. Choose the word or set of words that best fits the meaning of the sentence as a whole.",
+    kind: "stem",
+    questions: [
+      { q: "The committee's decision was so ------- that even its own members struggled to explain the reasoning behind it.",
+        o: ["transparent", "arbitrary", "unanimous", "cautious", "timely"], a: 1,
+        why: "কমিটির সদস্যরাও যুক্তি ব্যাখ্যা করতে হিমশিম খেলে বোঝা যায় সিদ্ধান্তের পেছনে স্পষ্ট কোনো যুক্তি ছিল না। তাই \"arbitrary\" (খেয়ালখুশি মতো) সঠিক।" },
+      { q: "Far from being ------- by the setback, the young chemist treated it as an opportunity, ------- her methods and eventually producing a far better result.",
+        o: ["discouraged ... refining", "delighted ... abandoning", "puzzled ... repeating", "enriched ... ignoring", "exhausted ... celebrating"], a: 0,
+        why: "\"Far from\" উল্টো ভাব বোঝায়: হতাশ (discouraged) হওয়ার বদলে সে সুযোগ হিসেবে নিয়েছে এবং পদ্ধতি পরিমার্জন (refining) করে আরও ভালো ফল পেয়েছে।" },
+      { q: "Because the island's ecosystem is so -------, the introduction of even a single new species can cause widespread disruption.",
+        o: ["resilient", "ancient", "fragile", "diverse", "isolated"], a: 2,
+        why: "একটিমাত্র নতুন প্রজাতিতেই বড় বিপর্যয় ঘটলে বোঝা যায় বাস্তুতন্ত্রটি খুব ভঙ্গুর (fragile)।" },
+      { q: "The novelist's early reviews were -------, but later critics have been far more generous, so that her reputation now rests on ------- praise.",
+        o: ["ecstatic ... muted", "glowing ... grudging", "hostile ... fleeting", "lukewarm ... widespread", "scathing ... dwindling"], a: 3,
+        why: "পরের সমালোচকরা \"far more generous\", অর্থাৎ আগের রিভিউ ছিল নিরুত্তাপ (lukewarm) আর এখনকার প্রশংসা ব্যাপক (widespread)।" },
+      { q: "The diplomat's ------- remarks, delivered with great care, offended no one yet committed her government to nothing.",
+        o: ["inflammatory", "candid", "prophetic", "strident", "noncommittal"], a: 4,
+        why: "যে মন্তব্য কোনো কিছুতেই প্রতিশ্রুতিবদ্ধ করে না, সেটি noncommittal (কোনো পক্ষ না নেওয়া)।" },
+      { q: "Her ------- made her an ideal editor: no inconsistency, however minor, escaped her notice.",
+        o: ["indifference", "meticulousness", "impatience", "nostalgia", "generosity"], a: 1,
+        why: "ছোটখাটো অসংগতিও চোখ এড়ায় না, এটি অত্যন্ত খুঁটিনাটি-সচেতন স্বভাব, অর্থাৎ meticulousness বোঝায়।" },
+      { q: "The ------- of the new policy was ------- by early reports, which showed participation falling sharply within weeks.",
+        o: ["success ... confirmed", "failure ... contradicted", "popularity ... undermined", "cost ... verified", "clarity ... enhanced"], a: 2,
+        why: "অংশগ্রহণ দ্রুত কমে গেলে নীতিটি জনপ্রিয় (popularity) ছিল, এই দাবি দুর্বল হয়ে পড়ে (undermined)।" }
+    ]
+  },
+  {
+    id: "an",
+    title: "Part 2: Analogies",
+    directions: "A related pair of words is followed by five lettered pairs. Select the pair that best expresses a relationship similar to the original pair.",
+    kind: "pair",
+    questions: [
+      { q: "ARCHITECT : BLUEPRINT",
+        o: ["sailor : harbor", "composer : score", "teacher : classroom", "judge : verdict", "farmer : market"], a: 1,
+        why: "স্থপতি পরিকল্পনা হিসেবে blueprint তৈরি করেন; সুরকার তেমনি score (স্বরলিপি) তৈরি করেন।" },
+      { q: "TIMID : COWER",
+        o: ["generous : hoard", "jubilant : mourn", "stubborn : yield", "arrogant : swagger", "frugal : squander"], a: 3,
+        why: "ভীতু (timid) মানুষ cower করে (ভয়ে গুটিয়ে যায়); অহংকারী (arrogant) মানুষ swagger করে (দম্ভভরে হাঁটে)।" },
+      { q: "THERMOMETER : TEMPERATURE",
+        o: ["camera : photograph", "clock : alarm", "scale : weight", "map : traveler", "ruler : wood"], a: 2,
+        why: "Thermometer তাপমাত্রা মাপে; scale ওজন মাপে।" },
+      { q: "ARID : MOISTURE",
+        o: ["frozen : winter", "fragrant : flower", "turbulent : wind", "luminous : shadow", "barren : fertility"], a: 4,
+        why: "Arid মানে আর্দ্রতার অভাব; barren মানে উর্বরতার অভাব।" },
+      { q: "EULOGY : PRAISE",
+        o: ["sermon : church", "ballad : sing", "debate : vote", "lullaby : infant", "satire : ridicule"], a: 4,
+        why: "Eulogy-র উদ্দেশ্য প্রশংসা করা; satire-এর উদ্দেশ্য বিদ্রূপ (ridicule) করা।" },
+      { q: "DRIZZLE : DELUGE",
+        o: ["puddle : rain", "cloud : sky", "frost : winter", "breeze : gale", "snow : shovel"], a: 3,
+        why: "Deluge হলো drizzle-এর চরম রূপ; gale হলো breeze-এর চরম রূপ (মাত্রার পার্থক্য)।" },
+      { q: "MALLEABLE : SHAPE",
+        o: ["brittle : bend", "opaque : see", "portable : carry", "fertile : harvest", "gloomy : paint"], a: 2,
+        why: "Malleable মানে সহজে আকার দেওয়া যায়; portable মানে সহজে বহন করা যায়।" },
+      { q: "PLAGIARIST : ORIGINALITY",
+        o: ["author : manuscript", "critic : review", "miser : generosity", "editor : error", "athlete : stamina"], a: 2,
+        why: "Plagiarist-এর মধ্যে মৌলিকতার (originality) অভাব; miser-এর মধ্যে উদারতার (generosity) অভাব।" },
+      { q: "CAUTION : RECKLESSNESS",
+        o: ["courage : cowardice", "hunger : appetite", "anger : rage", "honesty : truth", "patience : waiting"], a: 0,
+        why: "দুটি জোড়াই একটি গুণ ও তার বিপরীত দোষ: সতর্কতা–বেপরোয়া ভাব, সাহস–কাপুরুষতা।" }
+    ]
+  },
+  {
+    id: "ant",
+    title: "Part 3: Antonyms",
+    directions: "Choose the lettered word that is most nearly opposite in meaning to the word in capital letters. Some questions require fine shades of meaning, so consider all the choices.",
+    kind: "word",
+    questions: [
+      { q: "GREGARIOUS", o: ["talkative", "clever", "cheerful", "solitary", "generous"], a: 3, why: "Gregarious মানে মিশুক; solitary (একাকী) তার বিপরীত।" },
+      { q: "BENEVOLENT", o: ["wealthy", "timid", "forgetful", "careless", "malicious"], a: 4, why: "Benevolent মানে দয়ালু; malicious মানে ক্ষতি করার ইচ্ছাযুক্ত।" },
+      { q: "OBSTINATE", o: ["loyal", "pliable", "elderly", "stern", "modest"], a: 1, why: "Obstinate মানে একগুঁয়ে; pliable মানে সহজে প্রভাবিত হয় এমন।" },
+      { q: "EPHEMERAL", o: ["trivial", "hidden", "enduring", "sudden", "elaborate"], a: 2, why: "Ephemeral মানে ক্ষণস্থায়ী; enduring মানে দীর্ঘস্থায়ী।" },
+      { q: "LAUD", o: ["disregard", "repeat", "imitate", "conceal", "criticize"], a: 4, why: "Laud মানে প্রশংসা করা; criticize মানে সমালোচনা করা।" },
+      { q: "VERBOSE", o: ["hostile", "vague", "anxious", "concise", "ornate"], a: 3, why: "Verbose মানে অতিকথনপূর্ণ; concise মানে সংক্ষিপ্ত ও সারগর্ভ।" },
+      { q: "MAGNANIMOUS", o: ["petty", "timid", "ambitious", "thorough", "joyful"], a: 0, why: "Magnanimous মানে উদারমনা; petty মানে ক্ষুদ্রমনা।" },
+      { q: "ABATE", o: ["conceal", "intensify", "delay", "predict", "lessen"], a: 1, why: "Abate মানে কমে যাওয়া; intensify মানে বেড়ে যাওয়া। (\"lessen\" সমার্থক শব্দের ফাঁদ।)" },
+      { q: "CANDOR", o: ["humility", "cruelty", "evasiveness", "boredom", "loyalty"], a: 2, why: "Candor মানে খোলাখুলি সততা; evasiveness মানে সরাসরি উত্তর এড়িয়ে যাওয়া।" },
+      { q: "PRODIGAL", o: ["ignorant", "youthful", "devout", "thrifty", "reckless"], a: 3, why: "Prodigal মানে অপব্যয়ী; thrifty মানে মিতব্যয়ী।" },
+      { q: "ENHANCE", o: ["postpone", "invent", "diminish", "examine", "withhold"], a: 2, why: "Enhance মানে উন্নত করা বা বাড়ানো; diminish মানে কমানো।" }
+    ]
+  }
+];
+
+/* ------------------------------------------------------------------ */
+const LETTERS = ["A", "B", "C", "D", "E"];
+const STORE_KEY = "gre-vocab-practice-v1";
+const quizEl = document.getElementById("quiz");
+const resultsEl = document.getElementById("results");
+
+let state = { mode: "practice", answers: {}, checked: false };
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) state = Object.assign(state, JSON.parse(raw));
+  } catch (e) { /* storage unavailable: run without saving */ }
+}
+function save() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+const total = PARTS.reduce((n, p) => n + p.questions.length, 0);
+const key = (pid, i) => pid + "-" + i;
+
+function build() {
+  quizEl.innerHTML = "";
+  let num = 0;
+  PARTS.forEach(part => {
+    const sec = document.createElement("section");
+    sec.className = "part";
+    sec.innerHTML = `<h2>${part.title}</h2><p class="directions">${part.directions}</p>`;
+    part.questions.forEach((item, i) => {
+      num++;
+      const k = key(part.id, i);
+      const card = document.createElement("div");
+      card.className = "q";
+      card.id = "card-" + k;
+      const text = part.kind === "stem"
+        ? `<p class="q-text">${item.q}</p>`
+        : `<p class="q-text stem">${item.q}${part.kind === "pair" ? " ::" : ":"}</p>`;
+      let opts = "";
+      item.o.forEach((o, j) => {
+        opts += `<label class="opt" id="opt-${k}-${j}">
+          <input type="radio" name="${k}" value="${j}">
+          <span class="opt-body"><span class="L">(${LETTERS[j]})</span><span>${o}</span></span>
+        </label>`;
+      });
+      card.innerHTML = `
+        <div class="q-head"><span class="q-num">${num}.</span>${text}</div>
+        <fieldset><legend>Answer choices for question ${num}</legend>${opts}</fieldset>
+        <div class="why" id="why-${k}" hidden></div>`;
+      sec.appendChild(card);
+    });
+    quizEl.appendChild(sec);
+  });
+
+  quizEl.addEventListener("change", e => {
+    if (e.target.type !== "radio") return;
+    state.answers[e.target.name] = Number(e.target.value);
+    save();
+    if (state.mode === "practice") reveal(e.target.name);
+    updateProgress();
+  });
+}
+
+function parts() {
+  const list = [];
+  PARTS.forEach(p => p.questions.forEach((item, i) => list.push({ k: key(p.id, i), item })));
+  return list;
+}
+
+function reveal(k) {
+  const entry = parts().find(x => x.k === k);
+  const picked = state.answers[k];
+  if (picked === undefined) return;
+  const ok = picked === entry.item.a;
+  const card = document.getElementById("card-" + k);
+  card.classList.remove("right", "wrong");
+  card.classList.add(ok ? "right" : "wrong");
+  entry.item.o.forEach((_, j) => {
+    const el = document.getElementById(`opt-${k}-${j}`);
+    el.classList.add("locked");
+    el.classList.toggle("is-correct", j === entry.item.a);
+    el.classList.toggle("is-wrong", j === picked && !ok);
+    el.querySelector("input").disabled = true;
+  });
+  const why = document.getElementById("why-" + k);
+  why.hidden = false;
+  why.innerHTML = `<span class="verdict ${ok ? "ok" : "no"}">${ok ? "সঠিক।" : "ভুল হয়েছে। সঠিক উত্তর (" + LETTERS[entry.item.a] + ")।"}</span> ${entry.item.why}`;
+}
+
+function clearMarks() {
+  parts().forEach(({ k, item }) => {
+    const card = document.getElementById("card-" + k);
+    card.classList.remove("right", "wrong");
+    document.getElementById("why-" + k).hidden = true;
+    item.o.forEach((_, j) => {
+      const el = document.getElementById(`opt-${k}-${j}`);
+      el.classList.remove("locked", "is-correct", "is-wrong");
+      el.querySelector("input").disabled = false;
+    });
+  });
+}
+
+function restoreSelections() {
+  parts().forEach(({ k }) => {
+    const v = state.answers[k];
+    if (v !== undefined) {
+      const input = document.querySelector(`input[name="${k}"][value="${v}"]`);
+      if (input) input.checked = true;
+    }
+  });
+}
+
+function updateProgress() {
+  const n = Object.keys(state.answers).length;
+  document.getElementById("progressText").textContent = `${n} of ${total} answered`;
+  document.getElementById("progressBar").style.width = (n / total * 100) + "%";
+}
+
+function setMode(mode) {
+  state.mode = mode;
+  document.getElementById("modePractice").setAttribute("aria-pressed", mode === "practice");
+  document.getElementById("modeTest").setAttribute("aria-pressed", mode === "test");
+  save();
+  clearMarks();
+  resultsEl.hidden = true;
+  state.checked = false;
+  if (mode === "practice") {
+    Object.keys(state.answers).forEach(reveal);
+  }
+}
+
+function checkAll() {
+  const unanswered = parts().filter(({ k }) => state.answers[k] === undefined).length;
+  if (unanswered && !confirm(`${unanswered} question(s) are unanswered and will count as incorrect. Check anyway?`)) return;
+  state.checked = true;
+  parts().forEach(({ k, item }) => {
+    const card = document.getElementById("card-" + k);
+    const picked = state.answers[k];
+    if (picked === undefined) {
+      card.classList.add("wrong");
+      const el = document.getElementById(`opt-${k}-${item.a}`);
+      el.classList.add("locked", "is-correct");
+      card.querySelectorAll("input").forEach(i => i.disabled = true);
+      const why = document.getElementById("why-" + k);
+      why.hidden = false;
+      why.innerHTML = `<span class="verdict no">উত্তর দেওয়া হয়নি। সঠিক উত্তর (${LETTERS[item.a]})।</span> ${item.why}`;
+    } else {
+      reveal(k);
+    }
+  });
+
+  let rows = "", correct = 0;
+  PARTS.forEach(p => {
+    let c = 0;
+    p.questions.forEach((item, i) => { if (state.answers[key(p.id, i)] === item.a) c++; });
+    correct += c;
+    rows += `<tr><td>${p.title.replace(/^Part \d: /, "")}</td><td>${c} / ${p.questions.length}</td></tr>`;
+  });
+  const pct = Math.round(correct / total * 100);
+  resultsEl.innerHTML = `
+    <h2>You scored ${correct} of ${total} (${pct}%)</h2>
+    <table><thead><tr><th>Section</th><th>Correct</th></tr></thead><tbody>${rows}</tbody></table>
+    <p>প্রতিটি প্রশ্নের নিচের ব্যাখ্যা দেখে নাও। ভুল প্রশ্নগুলো লাল বর্ডারে দেখানো আছে।</p>`;
+  resultsEl.hidden = false;
+  resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function startOver() {
+  if (Object.keys(state.answers).length && !confirm("Clear all answers and start over?")) return;
+  state.answers = {};
+  state.checked = false;
+  save();
+  quizEl.querySelectorAll("input").forEach(i => { i.checked = false; });
+  clearMarks();
+  resultsEl.hidden = true;
+  updateProgress();
+  window.scrollTo({ top: 0 });
+}
+
+load();
+build();
+restoreSelections();
+document.getElementById("modePractice").setAttribute("aria-pressed", state.mode === "practice");
+document.getElementById("modeTest").setAttribute("aria-pressed", state.mode === "test");
+if (state.mode === "practice") Object.keys(state.answers).forEach(reveal);
+updateProgress();
+
+document.getElementById("modePractice").addEventListener("click", () => setMode("practice"));
+document.getElementById("modeTest").addEventListener("click", () => setMode("test"));
+document.getElementById("submit").addEventListener("click", checkAll);
+document.getElementById("jumpSubmit").addEventListener("click", checkAll);
+document.getElementById("reset").addEventListener("click", startOver);
+</script>
+</body>
+</html>
